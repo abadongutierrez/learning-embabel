@@ -17,34 +17,33 @@ data class WebSearchResult(
     val snippet: String
 )
 
+data class WebSearchResults(
+    val results: List<WebSearchResult>
+)
+
 @Agent(
     name = "WebPageSummaryAgent",
     description = "Agent to summarize web pages",
-
 )
 class WebPageSummaryAgent {
 
     @Action
-    fun extractSearchKey(input: UserInput): SearchKey {
-        return usingDefaultLlm.createObject("""
+    fun extractSearchKey(input: UserInput): SearchKey = usingDefaultLlm.createObject("""
             Extract the search query from the user input: ${input.content}
         """.trimIndent())
-    }
 
     @Action(
-        toolGroups = ["web", "math"],
+        toolGroups = ["web"],
     )
-    fun searchWebPages(searchKey: SearchKey): List<WebSearchResult> {
-        return usingDefaultLlm.createObject("""
+    fun searchWebPages(searchKey: SearchKey): WebSearchResults = usingDefaultLlm.createObject("""
             Using web tools search the web for the query: ${searchKey.query}
+            
+            Just use the first 10 results from the search.
             
             Extract the title, link, and snippet from each search results.
         """.trimIndent())
-    }
 
     @Action
-    @AchievesGoal(description = "Summarized the web pages for the user")
-    fun summarizeWebPages(webSearchResults: List<WebSearchResult>): List<WebSearchResult> {
-        return webSearchResults
-    }
+    @AchievesGoal("Summarized the web pages for the user")
+    fun summarizeWebPages(webSearchResults: WebSearchResults): WebSearchResults = webSearchResults
 }
