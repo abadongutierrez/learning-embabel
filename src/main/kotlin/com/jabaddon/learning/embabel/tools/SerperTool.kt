@@ -2,11 +2,13 @@ package com.jabaddon.learning.embabel.tools
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.slf4j.LoggerFactory
+import org.springframework.ai.tool.annotation.Tool
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
+import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 
@@ -55,7 +57,12 @@ class SerperTool(private val serperApiKey: String) {
     /**
      * Performs a web search using the provided query
      */
+    @Tool(
+        name = "SerperWebSearch",
+        description = "Performs a web search using the Serper API. Returns a list of search responses."
+    )
     fun search(query: String, numResults: Int = 10): SearchResponse {
+        logger.info("Received search request with query: '$query', numResults: $numResults")
         return when {
             serperApiKey.isBlank() -> SearchResponse(
                 status = "error",

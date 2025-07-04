@@ -1,0 +1,15 @@
+
+### Request to get a list of agents
+GET http://localhost:8080/agents
+
+###
+GET http://localhost:8080/run/agents/sayHello?name=Rafael
+
+###
+GET http://localhost:8080/run/agents/summary?topic=CIBanco
+
+###
+GET http://localhost:8080/run/agents/by-intent?intent=Search the web for Star wars and summarize it
+
+###
+GET http://localhost:8080/run/agents/by-intent?intent=My name is Rafael, say hello!

@@ -15,7 +15,7 @@ data class FormattedSearchResults(val content: String)
 
 @Agent(
     name = "WebSearchAgent",
-    description = "An agent that performs web searches using the Serper API and returns the results."
+    description = "Agent that performs web searches returns the results."
 )
 class WebSearchAgent(
     private val serperTool: SerperTool

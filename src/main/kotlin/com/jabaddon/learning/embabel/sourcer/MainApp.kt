@@ -17,6 +17,9 @@ class MainApp {
 
     @Bean
     fun serperTool(@Value("\${serper.api.key}") serperApiKey: String) = SerperTool(serperApiKey)
+
+    @Bean
+    fun jsoupTool() = com.jabaddon.learning.embabel.tools.JSoupTool()
 }
 
 fun main(args: Array<String>) {

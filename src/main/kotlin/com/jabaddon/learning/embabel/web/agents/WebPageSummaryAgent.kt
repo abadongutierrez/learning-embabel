@@ -1,4 +1,4 @@
-package com.jabaddon.learning.embabel.sourcer
+package com.jabaddon.learning.embabel.web.agents
 
 import com.embabel.agent.api.annotation.AchievesGoal
 import com.embabel.agent.api.annotation.Action
