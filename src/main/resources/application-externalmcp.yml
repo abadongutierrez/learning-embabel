@@ -1,0 +1,140 @@
+# External MCP Example Application Configuration
+spring:
+  application:
+    name: external-mcp-example
+  
+  profiles:
+    active: externalmcp
+
+# Embabel Agent Configuration
+embabel:
+  externalmcp:
+    gateway:
+      host: localhost
+      port: 9011
+      protocol: http
+      timeout: 30000
+      retries: 3
+    
+    services:
+      brave-search:
+        name: brave
+        enabled: true
+        timeout: 10000
+        rate-limit: 60
+      
+      wikipedia:
+        name: wikipedia-mcp
+        enabled: true
+        timeout: 10000
+        rate-limit: 30
+      
+      github:
+        name: github
+        enabled: true
+        timeout: 15000
+        rate-limit: 5000  # GitHub API rate limit
+      
+      puppeteer:
+        name: puppeteer
+        enabled: true
+        timeout: 20000
+        rate-limit: 10
+      
+      google-maps:
+        name: google-maps
+        enabled: true
+        timeout: 10000
+        rate-limit: 100
+      
+      openbnb:
+        name: openbnb-airbnb
+        enabled: false  # Disabled by default, requires special API access
+        timeout: 15000
+        rate-limit: 20
+
+    tools:
+      web-search:
+        name: brave_web_search
+        enabled: true
+        max-retries: 2
+        timeout: 15000
+      
+      wikipedia-search:
+        name: wikipedia-mcp:search
+        enabled: true
+        max-retries: 2
+        timeout: 10000
+      
+      github-issues:
+        name: github:list_issues
+        enabled: true
+        max-retries: 2
+        timeout: 15000
+      
+      github-prs:
+        name: github:list_pull_requests
+        enabled: true
+        max-retries: 2
+        timeout: 15000
+      
+      puppeteer-screenshot:
+        name: puppeteer:screenshot
+        enabled: true
+        max-retries: 1
+        timeout: 30000
+      
+      maps-search:
+        name: google-maps:search
+        enabled: true
+        max-retries: 2
+        timeout: 10000
+
+# Server Configuration
+server:
+  port: 8080
+
+# Logging Configuration
+logging:
+  level:
+    com.jabaddon.learning.embabel.externalmcp: INFO
+    com.embabel.agent.mcp: DEBUG
+    org.springframework.web: INFO
+  
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# Management and Monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+---
+# Development Profile
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+logging:
+  level:
+    com.jabaddon.learning.embabel.externalmcp: DEBUG
+    com.embabel.agent: DEBUG
+
+---
+# Production Profile  
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+logging:
+  level:
+    com.jabaddon.learning.embabel.externalmcp: WARN
+    com.embabel.agent.mcp: INFO
